@@ -20,3 +20,14 @@ If you become lost and want to reset to the beginning you can always use `git re
 
 To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
+
+# Step 1
+
+The first step is to set up your Java project. After that we will get access to the Kafka instance.  
+For your convenience a publicly available cluster has been setup. The location of the bootstrap server is located on `kafka.cluster.dissi.me:32100`.  
+To make sure that only _you_ can connect a username/password combination will be generated on the webpage. It ensures you can consume messages that are currently being produced.
+
+The user configuration is available on https://kafka.dissi.me/?tab=me
+
+In this workshop we will utilize the "[org.springframework.kafka](https://docs.spring.io/spring-boot/docs/2.7.4/reference/htmlsingle/#messaging.kafka)" library to connect to the server.
+
