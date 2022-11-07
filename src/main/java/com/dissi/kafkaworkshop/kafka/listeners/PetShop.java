@@ -19,6 +19,7 @@ public class PetShop {
    */
   @KafkaListener(topics = TOPIC_PET)
   public void onMessage(@Payload(required = false) String data) {
+    //TODO Add "business logic"
     log.info("Got message from kafka... " + data);
   }
 }
