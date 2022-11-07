@@ -21,26 +21,12 @@ If you become lost and want to reset to the beginning you can always use `git re
 To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
 
-# Step 1
+# Step 2
 
 ### Description
-The first step is to set up our Java projects. We will create a user and set up our application yaml.   
-In this workshop we will utilize the "[org.springframework.kafka](https://docs.spring.io/spring-boot/docs/2.7.4/reference/htmlsingle/#messaging.kafka)" library to connect to the server.
+The step is to create a way of serializing what you get in. We know what kind of data will be incoming.
+Our task is to find out how we can make a mapping from the data towards the actual Pet instance.
 
 ### Starting
-For your convenience a publicly available cluster has been set up. The location of the bootstrap server is located on `kafka.cluster.dissi.me:32100`.
 
-We can get access to kafka cluster by going to the "me" page on the workshop page.    
-This page automatically creates a user that connects towards the service.
-  
-To make sure that only _you_ can connect a username/password combination will be generated on the webpage. It ensures you can consume messages that are currently being produced.  
-Configuration is done by entering the details from the "me" tab.  
-Your configuration can be setup in the `src/main/resources/application.yaml` file.
-
-
-
-### Completion
-If you are done the output of your run should be able to display:
-
-<img src="pictures/1.png" alt="drawing" width="400"/>
-
+....
