@@ -10,7 +10,8 @@ import lombok.extern.java.Log;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.AbstractConsumerSeekAware;
-import org.springframework.kafka.listener.ConsumerSeekAware.ConsumerSeekCallback;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
@@ -38,16 +39,19 @@ public class PetShop extends AbstractConsumerSeekAware {
   /**
    * This method defines a simple listener that gets data from Kafka. It will display the data that it got from Kafka.
    *
+   * @param key They key that is related to the message that came in.
    * @param data The incoming pet data from the kafka topic named "pets".
    */
   @KafkaListener(topics = TOPIC_PET)
-  public void onMessage(@Payload(required = false) Pet data) {
+  public void onMessage(@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) Long key, @Payload(required = false) Pet data) {
     if (data != null) {
       log.info("Got message from kafka... " + data);
       petStorages.put(data.getId(), data);
     } else {
-      log.info("Got Empty data form Kafka?!");
-
+      log.info(String.format("Deleting [%s]", key));
+      petStorages.remove(key);
     }
+
+    log.info(String.format("Size of storage: [%s]", petStorages.size()));
   }
 }
