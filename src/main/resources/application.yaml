@@ -1,1 +1,9 @@
+spring:
+  kafka:
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping : "Pet:com.dissi.kafkaworkshop.kafka.model.Pet"
+---
 # TODO: Fill me with data from https://kafka.dissi.me/?tab=me !
