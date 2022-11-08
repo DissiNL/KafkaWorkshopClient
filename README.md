@@ -21,7 +21,7 @@ If you become lost and want to reset to the beginning you can always use `git re
 To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
 
-# Step 3
+# Step 4
 
 ### Description
 
