@@ -2,7 +2,6 @@ spring:
   kafka:
     consumer:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       properties:
         spring.json.trusted.packages: "*"
         spring.json.type.mapping : "Pet:com.dissi.kafkaworkshop.kafka.model.Pet"
