@@ -25,26 +25,43 @@ To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
 ### Description
 
-We would also like to store the pet locally so we can do magic with it later.  
-We would like to store the pet inside a Map format. The key is always unique meaning we can rely on the key in the message.
+Oh no.... Our kafka is storing everything! How can we ever deal with millions upon millions of rows of data... This is slowly becoming unsustainable.
+
+To ensure we can get rid of stale messages the team as decided to prnue everything older than a few minutes.
+
+This is done by creating a [Tombstone messages](https://kafka.apache.org/documentation/#design_compactionbasics). Creating these messages ensures that the cluster is capable of cleaning up, essentially freeing up the space.
+
+An example of the sequence of messages in order of arrival are;
+
+| Key            | Data                                                      |
+|----------------|-----------------------------------------------------------|
+| 1745           | `{ name: bla..., createdAt: 2022-11-08T15:07:23+00:00	}`  |
+| 1745           | NULL                                                      |
+
+This means the item with ID 1745 is no longer present after [log compacting](https://kafka.apache.org/documentation/#compaction) has happened.
 
 ### Starting
 
-Inside our PetShop we want to define a `Map<Long, Pet>`. This list contains the all the pets that exist.
+We want to delete Objects from the messages that we received form Kafka that contain the tombstone. This will prevent us from actually having the entire pet store in memory.
 
-To _also_ make sure we can re-run and actually have everything available from the beginning we also have to make sure we go back in time.
+The way we can find out what is deleted instead of using the entire object is looking at the [header of the message](https://kafka.apache.org/documentation/#messages). 
 
-Kafka ensures that you continue consuming where you left off. Sometimes we forget to do something vital, and we have to replay all messages inside a partition.
+We will have to adjust our code to deal with this new scenario.  
+The key is inside the header named `KafkaHeaders.RECEIVED_MESSAGE_KEY` and is of type `Long`.
 
-To look back into the beginning we have to _seek_ towards this.
 
-Hints...
-```java
-AbstractConsumerSeekAware
-onPartitionsAssigned
-```
+<details> 
+  <summary>Hint...</summary>
+
+```txt
+key-deserializer
+``` 
+</details>
+
+
+
 
 ### Completion
-If you are done the output of your run should have a field containing all pets.:
+If you are done the output of should display the deleted items:
 
-<img src="pictures/3.png" alt="drawing" width="534"/>
+<img src="pictures/4.png" alt="drawing" width="349"/>
