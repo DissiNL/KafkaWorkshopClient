@@ -21,47 +21,17 @@ If you become lost and want to reset to the beginning you can always use `git re
 To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
 
-# Step 3
+# Step 5
 
 ### Description
 
-Oh no.... Our kafka is storing everything! How can we ever deal with millions upon millions of rows of data... This is slowly becoming unsustainable.
-
-To ensure we can get rid of stale messages the team as decided to prnue everything older than a few minutes.
-
-This is done by creating a [Tombstone messages](https://kafka.apache.org/documentation/#design_compactionbasics). Creating these messages ensures that the cluster is capable of cleaning up, essentially freeing up the space.
-
-An example of the sequence of messages in order of arrival are;
-
-| Key            | Data                                                      |
-|----------------|-----------------------------------------------------------|
-| 1745           | `{ name: bla..., createdAt: 2022-11-08T15:07:23+00:00	}`  |
-| 1745           | NULL                                                      |
-
-This means the item with ID 1745 is no longer present after [log compacting](https://kafka.apache.org/documentation/#compaction) has happened.
+... Future ....
 
 ### Starting
 
-We want to delete Objects from the messages that we received form Kafka that contain the tombstone. This will prevent us from actually having the entire pet store in memory.
-
-The way we can find out what is deleted instead of using the entire object is looking at the [header of the message](https://kafka.apache.org/documentation/#messages). 
-
-We will have to adjust our code to deal with this new scenario.  
-The key is inside the header named `KafkaHeaders.RECEIVED_MESSAGE_KEY` and is of type `Long`.
-
-
-<details> 
-  <summary>Hint...</summary>
-
-```txt
-key-deserializer
-``` 
-</details>
-
-
+... Future ....
 
 
 ### Completion
-If you are done the output of should display the deleted items:
 
-<img src="pictures/4.png" alt="drawing" width="349"/>
+... Future ....
