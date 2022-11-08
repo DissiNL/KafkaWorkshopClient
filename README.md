@@ -21,39 +21,30 @@ If you become lost and want to reset to the beginning you can always use `git re
 To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
 
-# Step 2
+# Step 3
 
 ### Description
-The step is to create a way of serializing what you get in. We know what kind of data will be incoming.
-Our task is to find out how we can make a mapping from the data towards the actual Pet instance.
 
-Please note that the payload is `@Payload(required = false)` not required.
+We would also like to store the pet locally so we can do magic with it later.  
+We would like to store the pet inside a Map format. The key is always unique meaning we can rely on the key in the message.
 
 ### Starting
 
-We want to start by properly mapping the Object we're getting in. The object is defined as follows;
-```JSMin
-{
-  "id" :  "9001", // The ID of the pet that is created. Is considered to be unique. The type is "Long" and is never null.
-  "createdAt" :  "222022-11-07T13:34:53.975838212Z", // The most common ISO Date Time Format yyyy-MM-dd'T'HH:mm:ss.SSSXXX — for example, "2000-10-31T01:30:00.000-05:00".
-  "name": "John Cena", // Name of the animal. The maximum is 50 characters, never null
-  "type": "Lion", // Type of the animal like "Lynx" or "Chimpanzee". The maximum is 50 characters, never null.
-  "owner": "me" // The owner of the animal. The maximum is 50 characters, nullable.
-}
-```
-Setting up the automated mapping can be done in multiple ways.  
-In this workshop we will utilize jackson from the spring-boot-starter-json. It will ensure the correct serialization of the DatetimeOffset element inside the message.
+Inside our PetShop we want to define a `Map<Long, Pet>`. This list contains the all the pets that exist.
 
-All configuration should be done inside the application.yaml file   
-Hints......
-```yaml
-spring:
-  kafka:
-    consumer:
+To _also_ make sure we can re-run and actually have everything available from the beginning we also have to make sure we go back in time.
 
+Kafka ensures that you continue consuming where you left off. Sometimes we forget to do something vital, and we have to replay all messages inside a partition.
+
+To look back into the beginning we have to _seek_ towards this.
+
+Hints...
+```java
+AbstractConsumerSeekAware
+onPartitionsAssigned
 ```
 
 ### Completion
-If you are done the output of your run should be able to display:
+If you are done the output of your run should have a field containing all pets.:
 
-<img src="pictures/2.png" alt="drawing" width="748"/>
+<img src="pictures/3.png" alt="drawing" width="534"/>
