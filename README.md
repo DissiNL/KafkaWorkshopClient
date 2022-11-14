@@ -25,13 +25,27 @@ To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
 ### Description
 
-... Future ....
+Now we finally have proper cleanup available the end-users want to also have a new update to the actual service.  
+We want to be smart as we are too lazy to create a proper API for it and use the CLI to generate a new message.... But we accidentally got a wrong JSON format during pasting.
 
 ### Starting
 
-... Future ....
+The service was running fine. It now starts to break down as we can no longer properly handle errors.  
+You frantically try to fix the service quickly but also end up corrupting both the key and the value of the message.
+
+<details> 
+  <summary>Hint...</summary>
+
+```txt
+Function<FailedDeserializationInfo, Pet>
+ErrorHandlingDeserializer...
+properties:
+  spring.deserializer.key.delegate.class
+``` 
+</details>
 
 
 ### Completion
 
-... Future ....
+Once we add error handling we should be able to see the error and fix it.
+![](pictures/5.png)
