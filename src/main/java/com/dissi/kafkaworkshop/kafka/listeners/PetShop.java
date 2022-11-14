@@ -2,6 +2,8 @@ package com.dissi.kafkaworkshop.kafka.listeners;
 
 
 import static com.dissi.kafkaworkshop.kafka.config.KafkaConstants.TOPIC_PET;
+import static com.dissi.kafkaworkshop.kafka.handler.DeserializerKeyHandler.KEY_FAILURE;
+import static com.dissi.kafkaworkshop.kafka.handler.DeserializerValueHandler.VALUE_FAILURE;
 
 import com.dissi.kafkaworkshop.kafka.model.Pet;
 import java.util.HashMap;
@@ -22,7 +24,7 @@ public class PetShop extends AbstractConsumerSeekAware {
   /**
    * Contains all pets that currently have come in through Kafka.
    */
-  private Map<Long, Pet> petStorages = new HashMap<>();
+  private final Map<Long, Pet> petStorages = new HashMap<>();
 
   /**
    * Seeks back to the beginning of the pets' topic. It will seek towards this beginning and replay all messages.
@@ -44,9 +46,19 @@ public class PetShop extends AbstractConsumerSeekAware {
    */
   @KafkaListener(topics = TOPIC_PET)
   public void onMessage(@Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) Long key, @Payload(required = false) Pet data) {
+    if (KEY_FAILURE.equals(key)) {
+      // Really broken message....
+      return;
+    }
+
     if (data != null) {
-      log.info("Got message from kafka... " + data);
-      petStorages.put(data.getId(), data);
+      if (VALUE_FAILURE.equals(data)) {
+        log.warning("Got weird pet with ID -1");
+        // Ohno broken..
+      } else {
+        log.info("Got message from kafka... " + data);
+        petStorages.put(data.getId(), data);
+      }
     } else {
       log.info(String.format("Deleting [%s]", key));
       petStorages.remove(key);

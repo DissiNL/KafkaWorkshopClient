@@ -33,4 +33,10 @@ public class Pet {
 
   @JsonProperty("owner")
   private String owner;
+
+  public Pet id(Long id) {
+    this.id = id;
+    return this;
+  }
+
 }
