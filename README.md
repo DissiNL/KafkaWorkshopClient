@@ -21,31 +21,40 @@ If you become lost and want to reset to the beginning you can always use `git re
 To continue with this workshop fill in `git checkout origin/step-1 -b step-1`
 
 
-# Step 5
+# Step 6
 
 ### Description
 
-Now we finally have proper cleanup available the end-users want to also have a new update to the actual service.  
-We want to be smart as we are too lazy to create a proper API for it and use the CLI to generate a new message.... But we accidentally got a wrong JSON format during pasting.
+We've identified the issue, but it could still occur. To make sure we can deal with the problem in the future we will have to publish a follow-up message for "fixing" the error.
 
 ### Starting
 
-The service was running fine. It now starts to break down as we can no longer properly handle errors.  
-You frantically try to fix the service quickly but also end up corrupting both the key and the value of the message.
+A message has to be sent towards the service that contains invalid data. To make sure we fix this we have to send a message fixing it. 
+
+It would be wise to use a _Template_ to send the message.
+
+We properly **trust** the message will be republished with a proper pet after this oversight.
+
 
 <details> 
   <summary>Hint...</summary>
 
 ```txt
-Function<FailedDeserializationInfo, Pet>
-ErrorHandlingDeserializer...
-properties:
-  spring.deserializer.key.delegate.class
+spring:
+  kafka:
+    producer:
+      value-...
+      key-....
+      properties:
+        spring....
+
+KafkaT....
+
 ``` 
 </details>
 
 
 ### Completion
 
-Once we add error handling we should be able to see the error and fix it.
-![](pictures/5.png)
+Once we add error handling we should be able to see the error and publish a fixed message.
+![](pictures/6.png)
