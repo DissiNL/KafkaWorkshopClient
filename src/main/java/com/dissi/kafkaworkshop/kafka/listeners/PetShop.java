@@ -6,11 +6,14 @@ import static com.dissi.kafkaworkshop.kafka.handler.DeserializerKeyHandler.KEY_F
 import static com.dissi.kafkaworkshop.kafka.handler.DeserializerValueHandler.VALUE_FAILURE;
 
 import com.dissi.kafkaworkshop.kafka.model.Pet;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.AbstractConsumerSeekAware;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -19,7 +22,13 @@ import org.springframework.stereotype.Service;
 
 @Log
 @Service
+@RequiredArgsConstructor
 public class PetShop extends AbstractConsumerSeekAware {
+
+  /**
+   * This field defines what we send towards Kafka. It provides us with information on what we need to send.
+   */
+  private final KafkaTemplate<Long, Pet> petKafkaTemplate;
 
   /**
    * Contains all pets that currently have come in through Kafka.
@@ -54,7 +63,9 @@ public class PetShop extends AbstractConsumerSeekAware {
     if (data != null) {
       if (VALUE_FAILURE.equals(data)) {
         log.warning("Got weird pet with ID -1");
-        // Ohno broken..
+        // Ohno broken.. We send an update!
+        Pet pet = petStorages.getOrDefault(key, new Pet(key, OffsetDateTime.now(), "Mark", "Human", "its-me!"));
+        petKafkaTemplate.send(TOPIC_PET, key, pet);
       } else {
         log.info("Got message from kafka... " + data);
         petStorages.put(data.getId(), data);
